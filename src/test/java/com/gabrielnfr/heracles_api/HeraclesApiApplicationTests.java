@@ -1,0 +1,13 @@
+package com.gabrielnfr.heracles_api;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class HeraclesApiApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
