@@ -1,9 +1,9 @@
 package com.gabrielnfr.heracles_api.model;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.dialect.function.IntegralTimestampaddFunction;
 
 @Entity
 @Table(name = "treinos")
@@ -17,4 +17,7 @@ public class Treino {
 
     @Column(nullable = false, length = 100)
     private String nome;
+
+    @OneToMany(mappedBy = "treino", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Execucao> execucoes = new ArrayList<>();
 }

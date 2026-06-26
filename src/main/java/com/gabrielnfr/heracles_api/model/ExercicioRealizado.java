@@ -1,9 +1,9 @@
 package com.gabrielnfr.heracles_api.model;
 
-import java.util.concurrent.ExecutionException;
-
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "exercicios_realizados")
@@ -32,5 +32,6 @@ public class ExercicioRealizado {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "execucao_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Execucao execucao;
 }
