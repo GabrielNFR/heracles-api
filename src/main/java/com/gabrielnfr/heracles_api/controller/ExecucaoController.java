@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.gabrielnfr.heracles_api.dto.ExecucaoRequest;
-import com.gabrielnfr.heracles_api.dto.ExecucaoResponse;
+import com.gabrielnfr.heracles_api.dto.request.ExecucaoRequest;
+import com.gabrielnfr.heracles_api.dto.response.ExecucaoResponse;
 import com.gabrielnfr.heracles_api.model.Execucao;
 import com.gabrielnfr.heracles_api.model.ExercicioRealizado;
 import com.gabrielnfr.heracles_api.service.ExecucaoService;
-import com.gabrielnfr.heracles_api.dto.ExercicioRealizadoRequest;
+import com.gabrielnfr.heracles_api.dto.request.ExercicioRealizadoRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.gabrielnfr.heracles_api.service.TreinoService;
-import com.gabrielnfr.heracles_api.dto.TreinoRequest;
-import com.gabrielnfr.heracles_api.dto.TreinoResponse;
+import com.gabrielnfr.heracles_api.dto.request.TreinoRequest;
+import com.gabrielnfr.heracles_api.dto.response.TreinoResponse;
 import com.gabrielnfr.heracles_api.model.Treino;
 
 import jakarta.validation.Valid;

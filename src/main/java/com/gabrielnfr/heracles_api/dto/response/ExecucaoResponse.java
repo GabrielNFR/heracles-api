@@ -1,4 +1,4 @@
-package com.gabrielnfr.heracles_api.dto;
+package com.gabrielnfr.heracles_api.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;

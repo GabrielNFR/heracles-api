@@ -1,10 +1,11 @@
-package com.gabrielnfr.heracles_api.dto;
+package com.gabrielnfr.heracles_api.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class ExecucaoRequest {
     private LocalDateTime dataHora;
     @NotNull
     @Size(min = 1, message = "A execução deve ter pelo menos 1 exercício")
-    private List<ExercicioRealizadoRequest> exercicios;
+    private List<@Valid ExercicioRealizadoRequest> exercicios;
 }
