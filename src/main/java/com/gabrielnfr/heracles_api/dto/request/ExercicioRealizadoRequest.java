@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ExercicioRealizadoRequest {
-    @NotBlank(message = "Nome do exercício é obrigatório")
-    @Schema(description = "Nome do exercicio", example = "Supino reto")
-    private String nomeExercicio;
-    @NotNull(message = "Número de séries é obrigatório")
-    @Min(value = 1, message = "Número de séries deve ser maior que zero")
+    @NotNull(message = "ID do exercicio e obrigatorio")
+    @Schema(description = "ID do exercicio do treino", example = "1")
+    private Long exercicioId;
+    @NotNull(message = "Numero de series e obrigatorio")
+    @Min(value = 1, message = "Numero de series deve ser maior que zero")
     @Schema(description = "Numero de series", example = "3")
     private Integer series;
-    @NotBlank(message = "Número de repetições é obrigatório")
+    @NotBlank(message = "Numero de repeticoes e obrigatorio")
     @Schema(description = "Repeticoes (numero, faixa ou texto)", example = "10")
     private String repeticoes;
-    @NotNull(message = "Carga é obrigatória")
+    @NotNull(message = "Carga e obrigatoria")
     @Positive(message = "Carga deve ser maior que zero")
     @Schema(description = "Carga em kg", example = "60.0")
     private Double carga;

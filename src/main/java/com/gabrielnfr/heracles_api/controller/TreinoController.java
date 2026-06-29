@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.gabrielnfr.heracles_api.dto.request.ExercicioRequest;
 import com.gabrielnfr.heracles_api.dto.request.TreinoRequest;
 import com.gabrielnfr.heracles_api.dto.response.TreinoResponse;
 import com.gabrielnfr.heracles_api.model.Treino;
@@ -49,7 +50,11 @@ public class TreinoController {
     })
     @PostMapping
     public ResponseEntity<TreinoResponse> criar(@Valid @RequestBody TreinoRequest request) {
-        TreinoResponse tr = TreinoResponse.fromEntity(treinoService.criar(request.getNome()));
+        List<String> nomesExercicios = request.getExercicios().stream()
+            .map(ExercicioRequest::getNome)
+            .toList();
+        TreinoResponse tr = TreinoResponse.fromEntity(
+            treinoService.criar(request.getNome(), nomesExercicios));
         return ResponseEntity.status(HttpStatus.CREATED).body(tr);
     }
 

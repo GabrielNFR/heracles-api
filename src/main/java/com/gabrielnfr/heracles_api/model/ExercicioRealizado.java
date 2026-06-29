@@ -16,9 +16,6 @@ public class ExercicioRealizado {
     private Long id;
     
     @Column
-    private String nomeExercicio;
-
-    @Column
     private Integer series;
 
     @Column
@@ -29,6 +26,11 @@ public class ExercicioRealizado {
 
     @Column(length = 200)
     private String obs;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exercicio_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Exercicio exercicio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "execucao_id", nullable = false)

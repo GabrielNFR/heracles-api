@@ -16,6 +16,7 @@ import com.gabrielnfr.heracles_api.dto.error.ErrorResponse;
 import com.gabrielnfr.heracles_api.dto.request.ExecucaoRequest;
 import com.gabrielnfr.heracles_api.dto.response.ExecucaoResponse;
 import com.gabrielnfr.heracles_api.model.Execucao;
+import com.gabrielnfr.heracles_api.model.Exercicio;
 import com.gabrielnfr.heracles_api.model.ExercicioRealizado;
 import com.gabrielnfr.heracles_api.service.ExecucaoService;
 
@@ -46,7 +47,9 @@ public class ExecucaoController {
 
         for (ExercicioRealizadoRequest exReq : request.getExercicios()) {
             ExercicioRealizado er = new ExercicioRealizado();
-            er.setNomeExercicio(exReq.getNomeExercicio());
+            Exercicio exercicioRef = new Exercicio();
+            exercicioRef.setId(exReq.getExercicioId());
+            er.setExercicio(exercicioRef);
             er.setSeries(exReq.getSeries());
             er.setRepeticoes(exReq.getRepeticoes());
             er.setCarga(exReq.getCarga());

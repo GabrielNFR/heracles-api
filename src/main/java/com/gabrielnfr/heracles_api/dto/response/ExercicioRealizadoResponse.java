@@ -9,10 +9,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ExercicioRealizadoResponse {
-    @Schema(description = "ID do exercicio", example = "1")
+    @Schema(description = "ID do registro", example = "1")
     private Long id;
+    @Schema(description = "ID do exercicio", example = "1")
+    private Long exercicioId;
     @Schema(description = "Nome do exercicio", example = "Supino reto")
-    private String nomeExercicio;
+    private String exercicioNome;
     @Schema(description = "Numero de series", example = "3")
     private Integer series;
     @Schema(description = "Repeticoes", example = "10")
@@ -22,8 +24,15 @@ public class ExercicioRealizadoResponse {
     @Schema(description = "Observacoes", example = "aquecimento leve")
     private String obs;
 
-    public static ExercicioRealizadoResponse fromEntity(ExercicioRealizado ex) {
-        return new ExercicioRealizadoResponse(ex.getId(), ex.getNomeExercicio(), ex.getSeries(), ex.getRepeticoes(),
-            ex.getCarga(), ex.getObs());
+    public static ExercicioRealizadoResponse fromEntity(ExercicioRealizado er) {
+        return new ExercicioRealizadoResponse(
+            er.getId(),
+            er.getExercicio().getId(),
+            er.getExercicio().getNome(),
+            er.getSeries(),
+            er.getRepeticoes(),
+            er.getCarga(),
+            er.getObs()
+        );
     }
 }

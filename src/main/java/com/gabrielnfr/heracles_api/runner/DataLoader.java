@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gabrielnfr.heracles_api.model.Execucao;
+import com.gabrielnfr.heracles_api.model.Exercicio;
 import com.gabrielnfr.heracles_api.model.ExercicioRealizado;
 import com.gabrielnfr.heracles_api.model.Treino;
 import com.gabrielnfr.heracles_api.service.ExecucaoService;
@@ -30,24 +31,29 @@ public class DataLoader implements CommandLineRunner {
         log.info("Iniciando seed data...");
 
         try {
-            Treino peito = treinoService.criar("Peito");
-            Treino pernas = treinoService.criar("Pernas");
-            Treino costas = treinoService.criar("Costas");
-            log.info("Treinos criados: Peito (ID={}), Pernas (ID={}), Costas (ID={})",
-                peito.getId(), pernas.getId(), costas.getId());
+            Treino peito = treinoService.criar("Peito", List.of("Supino reto", "Crucifixo", "Cross-over"));
+            Treino pernas = treinoService.criar("Pernas", List.of("Agachamento", "Leg press", "Cadeira extensora"));
+            Treino costas = treinoService.criar("Costas", List.of("Puxada frente", "Remada curvada"));
+            log.info("Treinos criados com exercicios: Peito, Pernas, Costas");
 
             Execucao execPeito = new Execucao();
             execPeito.setDataHora(LocalDateTime.now());
 
+            Exercicio supinoRef = new Exercicio();
+            supinoRef.setId(peito.getExercicios().get(0).getId());
+
             ExercicioRealizado ex1 = new ExercicioRealizado();
-            ex1.setNomeExercicio("Supino reto");
+            ex1.setExercicio(supinoRef);
             ex1.setSeries(3);
             ex1.setRepeticoes("10");
             ex1.setCarga(60.0);
             ex1.setObs("aquecimento leve");
 
+            Exercicio crucifixoRef = new Exercicio();
+            crucifixoRef.setId(peito.getExercicios().get(1).getId());
+
             ExercicioRealizado ex2 = new ExercicioRealizado();
-            ex2.setNomeExercicio("Crucifixo");
+            ex2.setExercicio(crucifixoRef);
             ex2.setSeries(3);
             ex2.setRepeticoes("12");
             ex2.setCarga(20.0);
@@ -58,8 +64,11 @@ public class DataLoader implements CommandLineRunner {
             Execucao execCostas = new Execucao();
             execCostas.setDataHora(LocalDateTime.now().minusDays(1));
 
+            Exercicio puxadaRef = new Exercicio();
+            puxadaRef.setId(costas.getExercicios().get(0).getId());
+
             ExercicioRealizado ex3 = new ExercicioRealizado();
-            ex3.setNomeExercicio("Puxada frente");
+            ex3.setExercicio(puxadaRef);
             ex3.setSeries(4);
             ex3.setRepeticoes("8-10");
             ex3.setCarga(50.0);
@@ -67,7 +76,7 @@ public class DataLoader implements CommandLineRunner {
             execCostas.setExercicios(new ArrayList<>(List.of(ex3)));
             execucaoService.criar(costas.getId(), execCostas);
 
-            log.info("Seed data concluido: 3 treinos, 2 execucoes, 3 exercicios");
+            log.info("Seed data concluido: 3 treinos, 8 exercicios, 2 execucoes");
         } catch (Exception e) {
             log.error("Erro no DataLoader: {}", e.getMessage(), e);
         }

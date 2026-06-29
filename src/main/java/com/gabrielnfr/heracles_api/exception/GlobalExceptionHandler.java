@@ -53,6 +53,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(IllegalArgumentException ex, WebRequest request) {
+        String path = ((ServletWebRequest) request).getRequest().getRequestURI();
+        ErrorResponse er = new ErrorResponse(
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            ex.getMessage(),
+            path,
+            null
+            );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
+}
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> Exception(Exception ex, WebRequest request) {
         log.error("Erro interno {}", ex.getMessage(), ex);
