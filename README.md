@@ -1,6 +1,6 @@
 # Heracles API (WIP)
 
-API REST para registro de treinos. 
+API REST para registro de treinos, execuções e progressão de carga. 
 
 ## Stack
 
@@ -12,3 +12,9 @@ API REST para registro de treinos.
 | Banco de dados | H2 (em memoria) |
 | Build | Maven |
 | Lombok | (getters, setters, logging, construtores) |
+
+## Swagger / OpenAPI
+
+Documentacao interativa disponivel em:
+
+http://localhost:8080/swagger-ui.html
