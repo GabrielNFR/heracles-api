@@ -177,3 +177,12 @@ curl http://localhost:8080/treinos \
 ```
 
 Token expira em 7 dias. Cada usuário acessa apenas seus próprios treinos e execuções.
+
+## Próximos Passos
+
+| Área | Tarefa | Descrição |
+|---|---|---|
+| **Testes** | JUnit + Mockito | Testes unitários e de integração no backend |
+| **Testes** | React Testing Library | Testes de componente e fluxo no frontend |
+| **PWA** | Progressive Web App | Instalar o app no celular e usar offline |
+| **CI/CD** | GitHub Actions | Rodar testes e deploy automático a cada push |
