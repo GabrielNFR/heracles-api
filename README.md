@@ -11,6 +11,8 @@ Inspirada nos 12 Trabalhos de Hercules.
 | Spring Boot | 4.1.0 |
 | Spring Data JPA (Hibernate) | 7.4 |
 | Spring Web MVC | Tomcat embedado |
+| Spring Security | 6.x |
+| JWT (jjwt) | 0.12.6 |
 | Bean Validation | Jakarta Validation |
 | Spring Actuator | Health checks |
 | PostgreSQL | Producao (Neon) |
@@ -43,10 +45,10 @@ cd heracles-api
 ./mvnw spring-boot:run
 
 # 3. Acesse a API
-#    http://localhost:8080/treinos
+#    http://localhost:8080
 ```
 
-Perfil `default`: H2, DataLoader popula o banco com dados de exemplo.
+Perfil `default`: H2, `DataLoader` popula o banco com dados de exemplo e cria um usuario de teste (`teste@email.com` / `123456`).
 
 ### Banco H2 Console
 
@@ -88,16 +90,42 @@ Respostas de erro seguem o formato `ErrorResponse`:
 | Codigo | Handler | Quando ocorre |
 |---|---|---|
 | 400 | `@Valid` DTO / `IllegalArgumentException` | Validacao de campos, exercicio de outro treino |
+| 401 | Spring Security | Token JWT ausente ou invalido |
 | 404 | `EntityNotFoundException` / `NoResourceFoundException` | ID inexistente, rota invalida |
+| 409 | `AuthController` | Email ja cadastrado |
 | 500 | `Exception` (generico) | Erro interno (logado no servidor) |
 
 Erros 400 de validacao incluem `fieldErrors` com mensagens por campo.
 
-## Proximos Passos
+## Autenticacao
 
-### Autenticacao
+Endpoints protegidos com Spring Security + JWT. Credenciais validas retornam um token que deve ser enviado no header `Authorization: Bearer <token>`.
 
-- Spring Security + JWT
-- Registro de usuario (`POST /auth/register`)
-- Login (`POST /auth/login` → retorna token JWT)
-- Endpoints protegidos (usuario so acessa seus proprios treinos)
+### Endpoints
+
+| Metodo | Endpoint | Autenticado |
+|---|---|---|
+| `POST` | `/auth/register` | Nao |
+| `POST` | `/auth/login` | Nao |
+| `GET/POST/DELETE` | `/treinos/**` | Sim |
+| `GET/POST/DELETE` | `/execucoes/**` | Sim |
+
+### Exemplos
+
+```bash
+# Registrar
+curl -X POST http://localhost:8080/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@email.com","username":"user","password":"123456"}'
+
+# Login (retorna token JWT)
+curl -X POST http://localhost:8080/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@email.com","password":"123456"}'
+
+# Usar token
+curl http://localhost:8080/treinos \
+  -H "Authorization: Bearer <seu_token>"
+```
+
+Token expira em 7 dias. Cada usuario acessa apenas seus proprios treinos e execucoes.

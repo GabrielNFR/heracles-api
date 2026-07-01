@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ExercicioRequest {
-    @NotBlank(message = "Nome do exercicio e obrigatorio")
+    @NotBlank(message = "Nome do exercicio é obrigatorio")
     @Schema(description = "Nome do exercicio", example = "Supino reto")
     private String nome;
 }

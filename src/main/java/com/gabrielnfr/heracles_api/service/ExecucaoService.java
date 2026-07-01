@@ -25,9 +25,12 @@ public class ExecucaoService {
     private final ExercicioRepository exercicioRepository;
 
     @Transactional
-    public Execucao criar(Long treinoId, Execucao dadosExecucao) {
+    public Execucao criar(Long treinoId, Execucao dadosExecucao, Long usuarioId) {
         Treino treino = treinoRepository.findById(treinoId)
             .orElseThrow(() -> new EntityNotFoundException("Treino nao encontrado com ID: " + treinoId));
+        if (!treino.getUsuario().getId().equals(usuarioId)) {
+            throw new EntityNotFoundException("Treino nao encontrado com ID: " + treinoId);
+        }
         
         dadosExecucao.setTreino(treino);
         if (dadosExecucao.getExercicios() != null) {
@@ -63,23 +66,32 @@ public class ExecucaoService {
         return execucaoRepository.save(dadosExecucao);
     }
 
-    public List<Execucao> listarPorTreino(Long treinoId) {
-        treinoRepository.findById(treinoId)
+    public List<Execucao> listarPorTreino(Long treinoId, Long usuarioId) {
+        Treino treino = treinoRepository.findById(treinoId)
             .orElseThrow(() -> new EntityNotFoundException("Treino não encontrado com ID: " + treinoId));
-
+        if (!treino.getUsuario().getId().equals(usuarioId)) {
+            throw new EntityNotFoundException("Treino não encontrado com ID: " + treinoId);
+        }
         return execucaoRepository.findByTreinoId(treinoId);
     }
 
     @Transactional
-    public Execucao buscarPorId(Long id) {
-        return execucaoRepository.findById(id)
+    public Execucao buscarPorId(Long id, Long usuarioId) {
+        Execucao execucao = execucaoRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Execução não encontrada com ID: " + id));
+        if (!execucao.getTreino().getUsuario().getId().equals(usuarioId)) {
+            throw new EntityNotFoundException("Execução não encontrada com ID: " + id);
+        }
+        return execucao;
     }
 
     @Transactional
-    public void deletar(Long id) {
+    public void deletar(Long id, Long usuarioId) {
         Execucao execucao = execucaoRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Execução não encontrada com ID: " + id));
+        if (!execucao.getTreino().getUsuario().getId().equals(usuarioId)) {
+            throw new EntityNotFoundException("Execução não encontrada com ID: " + id);
+        }
         execucao.getTreino().getExecucoes().remove(execucao);
         execucaoRepository.delete(execucao);
     }

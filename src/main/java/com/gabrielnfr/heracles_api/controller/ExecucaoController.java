@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.gabrielnfr.heracles_api.dto.error.ErrorResponse;
 import com.gabrielnfr.heracles_api.dto.request.ExecucaoRequest;
@@ -19,6 +20,7 @@ import com.gabrielnfr.heracles_api.model.Execucao;
 import com.gabrielnfr.heracles_api.model.Exercicio;
 import com.gabrielnfr.heracles_api.model.ExercicioRealizado;
 import com.gabrielnfr.heracles_api.service.ExecucaoService;
+import com.gabrielnfr.heracles_api.security.UserDetailsImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -73,9 +75,12 @@ public class ExecucaoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/treinos/{treinoId}/execucoes")
-    public ResponseEntity<ExecucaoResponse> criar(@Parameter(description = "ID do treino") @PathVariable Long treinoId, @Valid @RequestBody ExecucaoRequest request) {
+    public ResponseEntity<ExecucaoResponse> criar(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(description = "ID do treino") @PathVariable Long treinoId,
+            @Valid @RequestBody ExecucaoRequest request) {
         Execucao ex = toEntity(request);
-        Execucao salva = execucaoService.criar(treinoId, ex);
+        Execucao salva = execucaoService.criar(treinoId, ex, userDetails.getId());
         ExecucaoResponse er = ExecucaoResponse.fromEntity(salva);
         return ResponseEntity.status(HttpStatus.CREATED).body(er);
     }
@@ -90,8 +95,10 @@ public class ExecucaoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/treinos/{treinoId}/execucoes")
-    public ResponseEntity<List<ExecucaoResponse>> listarPorTreino(@Parameter(description = "ID do treino") @PathVariable Long treinoId) {
-        List<Execucao> listaEx = execucaoService.listarPorTreino(treinoId);
+    public ResponseEntity<List<ExecucaoResponse>> listarPorTreino(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(description = "ID do treino") @PathVariable Long treinoId) {
+        List<Execucao> listaEx = execucaoService.listarPorTreino(treinoId, userDetails.getId());
         List<ExecucaoResponse> listaResp = listaEx.stream().map(ExecucaoResponse::fromEntity).toList();
         return ResponseEntity.ok(listaResp);
     }
@@ -106,8 +113,10 @@ public class ExecucaoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/execucoes/{id}")
-    public ResponseEntity<ExecucaoResponse> buscarPorId(@Parameter(description = "ID da execução") @PathVariable Long id) {
-        ExecucaoResponse er = ExecucaoResponse.fromEntity(execucaoService.buscarPorId(id));
+    public ResponseEntity<ExecucaoResponse> buscarPorId(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(description = "ID da execução") @PathVariable Long id) {
+        ExecucaoResponse er = ExecucaoResponse.fromEntity(execucaoService.buscarPorId(id, userDetails.getId()));
         return ResponseEntity.ok(er);
     }
 
@@ -120,8 +129,10 @@ public class ExecucaoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @DeleteMapping("/execucoes/{id}")
-    public ResponseEntity<Void> deletar(@Parameter(description = "ID da execução") @PathVariable Long id) {
-        execucaoService.deletar(id);
+    public ResponseEntity<Void> deletar(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(description = "ID da execução") @PathVariable Long id) {
+        execucaoService.deletar(id, userDetails.getId());
         return ResponseEntity.noContent().build();
     }
 }

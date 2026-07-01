@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.gabrielnfr.heracles_api.service.TreinoService;
 import com.gabrielnfr.heracles_api.dto.error.ErrorResponse;
@@ -27,6 +28,8 @@ import com.gabrielnfr.heracles_api.dto.request.ExercicioRequest;
 import com.gabrielnfr.heracles_api.dto.request.TreinoRequest;
 import com.gabrielnfr.heracles_api.dto.response.TreinoResponse;
 import com.gabrielnfr.heracles_api.model.Treino;
+import com.gabrielnfr.heracles_api.model.Usuario;
+import com.gabrielnfr.heracles_api.security.UserDetailsImpl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +52,16 @@ public class TreinoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
-    public ResponseEntity<TreinoResponse> criar(@Valid @RequestBody TreinoRequest request) {
+    public ResponseEntity<TreinoResponse> criar(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Valid @RequestBody TreinoRequest request) {
         List<String> nomesExercicios = request.getExercicios().stream()
             .map(ExercicioRequest::getNome)
             .toList();
+        Usuario usuario = new Usuario();
+        usuario.setId(userDetails.getId());
         TreinoResponse tr = TreinoResponse.fromEntity(
-            treinoService.criar(request.getNome(), nomesExercicios));
+            treinoService.criar(usuario, request.getNome(), nomesExercicios));
         return ResponseEntity.status(HttpStatus.CREATED).body(tr);
     }
 
@@ -66,8 +73,9 @@ public class TreinoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping 
-    public ResponseEntity<List<TreinoResponse>> listarTodos() {
-        List<Treino> t = treinoService.listarTodos();
+    public ResponseEntity<List<TreinoResponse>> listarTodos(
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<Treino> t = treinoService.listarTodos(userDetails.getId());
         List<TreinoResponse> tr = t.stream().map(TreinoResponse::fromEntity).toList();
         return ResponseEntity.ok(tr);
     }
@@ -82,8 +90,10 @@ public class TreinoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TreinoResponse> buscarPorId(@Parameter(description = "ID do treino") @PathVariable Long id) {
-        TreinoResponse tr = TreinoResponse.fromEntity(treinoService.buscarPorId(id));
+    public ResponseEntity<TreinoResponse> buscarPorId(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(description = "ID do treino") @PathVariable Long id) {
+        TreinoResponse tr = TreinoResponse.fromEntity(treinoService.buscarPorId(id, userDetails.getId()));
         return ResponseEntity.ok(tr);
     }
 
@@ -96,8 +106,10 @@ public class TreinoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@Parameter(description = "ID do treino") @PathVariable Long id) {
-        treinoService.deletar(id);
+    public ResponseEntity<Void> deletar(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(description = "ID do treino") @PathVariable Long id) {
+        treinoService.deletar(id, userDetails.getId());
         return ResponseEntity.noContent().build();
     }
 }   

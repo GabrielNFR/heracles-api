@@ -23,4 +23,8 @@ public class Treino {
 
     @OneToMany(mappedBy = "treino", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Exercicio> exercicios = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }
