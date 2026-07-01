@@ -3,6 +3,7 @@ package com.gabrielnfr.heracles_api.service;
 import org.springframework.stereotype.Service;
 
 import com.gabrielnfr.heracles_api.repository.TreinoRepository;
+import com.gabrielnfr.heracles_api.repository.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TreinoService {
     private final TreinoRepository treinoRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Transactional
     public Treino criar(Usuario usuario, String nome, List<String> nomesExercicios) {
@@ -32,7 +34,7 @@ public class TreinoService {
             exercicios.add(exercicio);
         }
         treino.setExercicios(exercicios);
-        treino.setUsuario(usuario);
+        treino.setUsuario(usuarioRepository.getReferenceById(usuario.getId()));
 
         return treinoRepository.save(treino);
     }
