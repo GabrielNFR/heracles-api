@@ -1,6 +1,7 @@
 # Heracles API
 
 > ### [Acesse o App → Heracles Tracker](https://heracles-tracker.vercel.app)
+> Instalável no celular (PWA) — adicione à tela inicial e use offline (Navegadores Chromium e Safari)
 
 API REST para registro de treinos, execuções e progressão de carga.
 Inspirada nos 12 Trabalhos de Hercules.
@@ -184,5 +185,4 @@ Token expira em 7 dias. Cada usuário acessa apenas seus próprios treinos e exe
 |---|---|---|
 | **Testes** | JUnit + Mockito | Testes unitários e de integração no backend |
 | **Testes** | React Testing Library | Testes de componente e fluxo no frontend |
-| **PWA** | Progressive Web App | Instalar o app no celular e usar offline |
 | **CI/CD** | GitHub Actions | Rodar testes e deploy automático a cada push |
