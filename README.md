@@ -2,6 +2,7 @@
 
 > ### [Acesse o App → Heracles Tracker](https://heracles-tracker.vercel.app)
 > Instalável no celular (PWA) — adicione à tela inicial e use offline (Navegadores Chromium e Safari)
+> Offline-first com **TinyBase** — salva localmente e sincroniza com o servidor ao conectar
 
 API REST para registro de treinos, execuções e progressão de carga.
 Inspirada nos 12 Trabalhos de Hercules.
