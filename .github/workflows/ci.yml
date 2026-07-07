@@ -31,3 +31,11 @@ jobs:
 
       - name: Run tests
         run: ./mvnw test --no-transfer-progress
+
+  deploy:
+    needs: test
+    if: success() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
