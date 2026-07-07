@@ -180,10 +180,19 @@ curl http://localhost:8080/treinos \
 
 Token expira em 7 dias. Cada usuário acessa apenas seus próprios treinos e execuções.
 
+## Pipeline CI/CD
+
+```
+git push main → GitHub Actions (JUnit + Mockito)
+                  ├── passou → Deploy automático no Render via Deploy Hook
+                  └── falhou → Bloqueia deploy
+```
+
+24 testes unitários cobrindo services, controllers e JWT.
+
 ## Próximos Passos
 
 | Área | Tarefa | Descrição |
 |---|---|---|
-| **Testes** | JUnit + Mockito | Testes unitários e de integração no backend |
-| **Testes** | React Testing Library | Testes de componente e fluxo no frontend |
-| **CI/CD** | GitHub Actions | Rodar testes e deploy automático a cada push |
+| **Segurança** | Refresh token | Renovar JWT sem forçar novo login |
+| **API** | Paginação | `GET /treinos?page=0&size=20` com links de navegação |
