@@ -45,12 +45,6 @@ public class ExecucaoService {
                     throw new IllegalArgumentException(
                         "Exercicio '" + exercicio.getNome() + "' nao pertence ao treino " + treino.getNome());
                 }
-                if (realizado.getSeries() == null || realizado.getSeries() <= 0) {
-                    throw new IllegalArgumentException("Numero de series deve ser maior que zero");
-                }
-                if (realizado.getRepeticoes() == null || realizado.getRepeticoes().isBlank()) {
-                    throw new IllegalArgumentException("Repeticoes e obrigatorio");
-                }
                 realizado.setExercicio(exercicio);
                 realizado.setExecucao(dadosExecucao);
             }
