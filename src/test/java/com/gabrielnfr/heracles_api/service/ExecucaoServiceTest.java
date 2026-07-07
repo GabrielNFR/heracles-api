@@ -1,6 +1,7 @@
 package com.gabrielnfr.heracles_api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -173,5 +174,33 @@ public class ExecucaoServiceTest {
 
         assertThrows(EntityNotFoundException.class,
             () -> execucaoService.listarPorTreino(20L, 1L));
+    }
+
+    @Test
+    void devePermitirExercicioNaoRealizado() {
+        Exercicio supino = new Exercicio();
+        supino.setId(1L); supino.setNome("Supino"); supino.setTreino(treino);
+
+        ExercicioRealizado realizado = new ExercicioRealizado();
+        realizado.setExercicio(supino);
+        realizado.setSeries(null);       // sem series
+        realizado.setRepeticoes(null);   // sem repeticoes
+        realizado.setCarga(null);        // ← NAO REALIZADO
+
+        Execucao dados = new Execucao();
+        dados.setDataHora(LocalDateTime.now());
+        dados.setExercicios(List.of(realizado));
+
+        Execucao salva = new Execucao();
+        salva.setId(5L); salva.setTreino(treino);
+        salva.setExercicios(List.of(realizado));
+
+        when(treinoRepository.findById(10L)).thenReturn(Optional.of(treino));
+        when(exercicioRepository.findById(1L)).thenReturn(Optional.of(supino));
+        when(execucaoRepository.save(any())).thenReturn(salva);
+
+        Execucao resultado = execucaoService.criar(10L, dados, 1L);
+
+        assertNull(resultado.getExercicios().get(0).getCarga());
     }
 }

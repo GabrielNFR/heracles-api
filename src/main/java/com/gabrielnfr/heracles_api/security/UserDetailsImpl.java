@@ -13,13 +13,13 @@ import lombok.Getter;
 public class UserDetailsImpl implements UserDetails {
     private Long id;
     private String email;
-    private String username;
+    private String displayName;
     private String password;
 
     public UserDetailsImpl(Usuario user) {
         this.id = user.getId();
         this.email = user.getEmail();
-        this.username = user.getUsername();
+        this.displayName = user.getUsername();
         this.password = user.getPasswordHash();
     }
 
