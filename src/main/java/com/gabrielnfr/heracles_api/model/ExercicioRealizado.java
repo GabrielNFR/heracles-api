@@ -21,7 +21,7 @@ public class ExercicioRealizado {
     @Column
     private String repeticoes;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double carga;
 
     @Column(length = 200)

@@ -51,9 +51,6 @@ public class ExecucaoService {
                 if (realizado.getRepeticoes() == null || realizado.getRepeticoes().isBlank()) {
                     throw new IllegalArgumentException("Repeticoes e obrigatorio");
                 }
-                if (realizado.getCarga() == null || realizado.getCarga() <= 0) {
-                    throw new IllegalArgumentException("Carga deve ser maior que zero");
-                }
                 realizado.setExercicio(exercicio);
                 realizado.setExecucao(dadosExecucao);
             }
