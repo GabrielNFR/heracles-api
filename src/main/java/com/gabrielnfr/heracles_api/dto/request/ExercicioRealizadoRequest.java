@@ -27,4 +27,6 @@ public class ExercicioRealizadoRequest {
     private Double carga;
     @Schema(description = "Observacoes", example = "aquecimento leve")
     private String obs;
+    @Schema(description = "Unidade da carga (kg ou placas)", example = "kg")
+    private String unidade;
 }

@@ -23,6 +23,8 @@ public class ExercicioRealizadoResponse {
     private Double carga;
     @Schema(description = "Observacoes", example = "aquecimento leve")
     private String obs;
+    @Schema(description = "Unidade da carga", example = "kg")
+    private String unidade;
 
     public static ExercicioRealizadoResponse fromEntity(ExercicioRealizado er) {
         return new ExercicioRealizadoResponse(
@@ -32,7 +34,8 @@ public class ExercicioRealizadoResponse {
             er.getSeries(),
             er.getRepeticoes(),
             er.getCarga(),
-            er.getObs()
+            er.getObs(),
+            er.getUnidade()
         );
     }
 }

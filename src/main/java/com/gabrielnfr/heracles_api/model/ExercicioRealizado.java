@@ -36,4 +36,7 @@ public class ExercicioRealizado {
     @JoinColumn(name = "execucao_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Execucao execucao;
+
+    @Column(length = 10)
+    private String unidade;
 }

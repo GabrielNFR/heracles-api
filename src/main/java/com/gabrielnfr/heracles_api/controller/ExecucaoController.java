@@ -56,6 +56,7 @@ public class ExecucaoController {
             er.setRepeticoes(exReq.getRepeticoes());
             er.setCarga(exReq.getCarga());
             er.setObs(exReq.getObs());
+            er.setUnidade(exReq.getUnidade());
             listaER.add(er);
         }
         ex.setExercicios(listaER);
