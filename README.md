@@ -155,6 +155,8 @@ Endpoints protegidos com Spring Security + JWT. Credenciais válidas retornam um
 |---|---|---|
 | `POST` | `/auth/register` | Não |
 | `POST` | `/auth/login` | Não |
+| `POST` | `/auth/refresh` | Não (usa refresh token) |
+| `POST` | `/auth/logout` | Não (usa refresh token) |
 | `GET/POST/DELETE` | `/treinos/**` | Sim |
 | `GET/POST/DELETE` | `/execucoes/**` | Sim |
 
@@ -166,17 +168,27 @@ curl -X POST http://localhost:8080/auth/register \
   -H "Content-Type: application/json" \
   -d '{"email":"user@email.com","username":"user","password":"123456"}'
 
-# Login (retorna token JWT)
+# Login (retorna access + refresh token)
 curl -X POST http://localhost:8080/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"user@email.com","password":"123456"}'
 
 # Usar token
 curl http://localhost:8080/treinos \
-  -H "Authorization: Bearer <seu_token>"
+  -H "Authorization: Bearer <access_token>"
+
+# Renovar access token
+curl -X POST http://localhost:8080/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{"refreshToken":"uuid-do-login"}'
+
+# Logout (revoga refresh token)
+curl -X POST http://localhost:8080/auth/logout \
+  -H "Content-Type: application/json" \
+  -d '{"refreshToken":"uuid-do-login"}'
 ```
 
-Token expira em 7 dias. Cada usuário acessa apenas seus próprios treinos e execuções.
+Access token expira em 15 minutos; refresh token dura 30 dias. Cada usuário acessa apenas seus próprios treinos e execuções.
 
 ## Pipeline CI/CD
 
@@ -186,11 +198,8 @@ git push main → GitHub Actions (JUnit + Mockito)
                   └── falhou → Bloqueia deploy
 ```
 
-24 testes unitários cobrindo services, controllers e JWT.
+31 testes unitários cobrindo services, controllers e JWT.
 
 ## Próximos Passos
 
-| Área | Tarefa | Descrição |
-|---|---|---|
-| **Segurança** | Refresh token | Renovar JWT sem forçar novo login |
-| **API** | Paginação | `GET /treinos?page=0&size=20` com links de navegação |
+- 📄 **Paginação** — `GET /treinos?page=0&size=20` com links de navegação
