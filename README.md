@@ -55,22 +55,20 @@ Inspirada nos 12 Trabalhos de Hercules.
 
 ## Stack
 
-| Tecnologia | Versão |
+| Categoria | Stack |
 |---|---|
-| Java | 21 |
-| Spring Boot | 4.1.0 |
-| Spring Data JPA (Hibernate) | 7.4 |
-| Spring Web MVC | Tomcat embarcado |
-| Spring Security | 6.x |
-| JWT (jjwt) | 0.12.6 |
-| Bean Validation | Jakarta Validation |
-| Spring Actuator | Health checks |
-| PostgreSQL | Produção (Neon) |
-| H2 | Desenvolvimento (em memória) |
-| Lombok | Getters, setters, logging, construtores |
-| Swagger / OpenAPI | springdoc-openapi 2.8.8 |
-| Docker | Containerização |
-| Maven | Build |
+| **Linguagem** | Java 21 |
+| **Framework** | Spring Boot 4.1.0 |
+| **Persistência** | Spring Data JPA (Hibernate 7.4) |
+| **Segurança** | Spring Security 6.x + JWT (jjwt 0.12.6) |
+| **Validação** | Bean Validation (Jakarta) |
+| **Banco (prod)** | PostgreSQL (Neon) |
+| **Banco (dev)** | H2 (em memória) |
+| **Documentação** | Swagger/OpenAPI (springdoc 2.8.8) |
+| **Build** | Maven |
+| **Container** | Docker |
+| **Monitoramento** | Spring Actuator |
+| **Utilidades** | Lombok |
 
 ## Deploy
 
